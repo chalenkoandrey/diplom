@@ -3,10 +3,10 @@ services:
   server:
     build:
       context: ./server/
-    command: npm run dev
+    command: sh -c "npm install && npm run load-fixtures && npm run dev"
     volumes:
       - ./server/:/usr/app
-      - ./usr/app/node_modules
+      - /usr/app/node_modules
     ports:
       - "9000:9000"
     depends_on:
@@ -19,7 +19,7 @@ services:
     command: npm start
     volumes:
       - ./client/:/usr/app
-      - ./usr/app/node_modules
+      - /usr/app/node_modules
     depends_on:
       - server
     ports:
