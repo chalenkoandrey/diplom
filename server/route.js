@@ -2,15 +2,18 @@ const express = require("express");
 let router = express.Router();
 const controller = require("./contoroller");
 const authorization = require("./authorization");
-router.route("/login/")
+router.route("/api/auth/sign_in")
   .post(authorization.login)
 router.route("/registration/")
   .post(authorization.registration)
-router.route("/users/")
+router.route("/api/db/showalldishes")
   .get(controller.showall);
-router.route("/user/:id")
-  .get(controller.showById)
-  .delete(controller.deleteById);
+router.route("/api/db/detailed/:id")
+  .get(controller.showByIdDetailed)
+router.route("/api/db/small/:id")
+  .get(controller.showByIdSmall)
+router.route("/api/db/showdishesbytype/")
+  .get(controller.acceptFriendById)
 router.route("/users/:id/requestFriend/")
   .post(authorization.isUserAuthorized, controller.addFriendsReqById)
 router.route("/users/:id/acceptFriend/")

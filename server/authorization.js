@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
-const UserModel = require("./model").UserModel;
+const EmployeeModel = require("./model").EmployeeModel;
 function login(req, res) {
-  const { name, password } = req.body;
-  UserModel.findOne({ name: name })
+  console.log(req);
+  const { login, password } = req.body;
+  EmployeeModel.findOne({ login: login })
     .exec()
     .then((user) => {
       const hexPassword = Buffer(password).toString('hex');
@@ -17,6 +18,7 @@ function login(req, res) {
           .status(401)
           .send("Error password");
       }
+
     })
     .catch((error) => {
       res
@@ -49,7 +51,7 @@ function isUserAuthorized(req, res, next) {
 }
 function registration(req, res) {
   if (req.body.name && req.body.date && req.body.password) {
-    let user = new UserModel({
+    let user = new EmployeeModel({
       name: req.body.name,
       date: req.body.date,
       password: Buffer(req.body.password).toString('hex')

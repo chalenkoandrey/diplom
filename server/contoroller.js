@@ -1,6 +1,6 @@
-const UserModel = require("./model").UserModel;
-function showall(req, res) {//show all users in DataBase
-  UserModel.find()
+const DishModel = require("./model").DishModel;
+function showall(req, res) {//show all dishes in DataBase
+  DishModel.find()
     .exec()
     .then((result) => {
       res
@@ -13,9 +13,9 @@ function showall(req, res) {//show all users in DataBase
         .send(error);
     })
 }
-function showById(req, res) {//show user by id
-  var userIdForShow = req.params.id;
-  UserModel.findById(userIdForShow)
+function showByIdDetailed(req, res) {//show detailed  dish  by id
+  var dishIdForShow = req.params.id;
+  DishModel.findById(dishIdForShow)
     .exec()
     .then((result) => {
       if (result != null) {
@@ -24,7 +24,7 @@ function showById(req, res) {//show user by id
       else {
         res
           .status(404)
-          .send("No user with this Id");
+          .send("No dish with this Id");
       }
     })
     .catch((error) => {
@@ -33,19 +33,23 @@ function showById(req, res) {//show user by id
         .send(error);
     })
 }
-function deleteById(req, res) {//delete user from DataBase
-  var userIdForDelete = req.params.id;
-  UserModel.findByIdAndDelete(userIdForDelete)
+function showByIdSmall(req, res) {//show small dish by id
+  var dishIdForShow = req.params.id;
+  DishModel.findById(dishIdForShow).select("name cost image availability")
     .exec()
-    .then((user) => {
-      return user.remove();
-    })
-    .then(() => {
-      showall(req, res)
+    .then((result) => {
+      if (result != null) {
+        res.json({ result });
+      }
+      else {
+        res
+          .status(404)
+          .send("No dish with this Id");
+      }
     })
     .catch((error) => {
       res
-        .status(500)
+        .status(502)
         .send(error);
     })
 }
@@ -204,6 +208,6 @@ function showByToken(req, res) {
     })
 }
 module.exports = {
-  showall, showById, deleteById, showByToken,
+  showall, showByIdDetailed, showByIdSmall, showByToken,
   addFriendsReqById, acceptFriendById, deleteFriendById, deleteFriendsReqById
 };

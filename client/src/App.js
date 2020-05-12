@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavDropdown, NavLink, Nav, Button, Form, FormControl, Table } from 'react-bootstrap';
 import foodOrder from './components/foodOrder';
-function Home() {
-  return <h2>Home</h2>;
-}
+import login from './components/login';
+import Home from './components/home';
+import DeatiledDishes from './components/detaileddish';
 function About() {
   return <h2>Home</h2>;
 }
@@ -32,6 +32,8 @@ function App() {
       <Route path="/food" component={foodOrder} />
       <Route path="/delivery" component={Home} />
       <Route path="/about" component={About} />
+      <Route path="/login" component={login} />
+      <Route path="/dishes" component={DeatiledDishes} />
     </Router>
   );
 }

@@ -1,10 +1,9 @@
 const mongoose = require("./mongoose").mongoose;
 const Schema = mongoose.Schema;
-const User = new Schema({
+const Client = new Schema({
   name: { type: String, required: true },
-  orderDish: { type: [String], required: true, },
-  cost: { type: Number },
-  number: { type: Number, required: true }
+  number: { type: String },
+  count: { type: Number }
 });
 const Employee = new Schema({
   name: { type: String, required: true },
@@ -19,9 +18,18 @@ const Dish = new Schema({
   weight: { type: Number, required: true },
   time: { type: String, required: true },
   image: { type: String, required: true },
-  type: { type: String, required: true }
+  type: { type: String, required: true },
+  availability: { type: String, required: true }
 });
-const UserModel = mongoose.model('User', User);
+const DishOrder = new Schema({
+  dishes: { type: [String] },
+  cost: { type: Number, required: true },
+  table: { type: String, required: true },
+  status: { type: String, required: true },
+  client: { type: String, required: true }
+});
+const UserModel = mongoose.model('Client', Client);
 const DishModel = mongoose.model('Dish', Dish);
-const EmployeeModel = mongoose.model("Employee", Employee)
-module.exports = { UserModel, DishModel, EmployeeModel };
+const EmployeeModel = mongoose.model("Employee", Employee);
+const DishOrderModel = mongoose.model("DishOrder", DishOrder);
+module.exports = { UserModel, DishModel, EmployeeModel, DishOrderModel };
