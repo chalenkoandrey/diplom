@@ -10,17 +10,17 @@ class DetaildeDishes extends Component {
       .then(response => response.json())
       .then(result => {
         this.setState({ dish: result["result"] })
-        this.props.dish = this.state.dish
         console.log(this.state.dish);
       })
 
   }
   render() {
     return (
-      <div className="container">
-        {this.state && this.state.dish["name"]}
-        {this.state && this.state.dish["cost"]}
-        <img src={"http://localhost:9000/images/" + this.props.dish.image} width="150" height="150"></img>
+      <div className="dish">
+        {this.state && <img src={"http://localhost:9000/images/" + this.state.dish["image"]} width="200dp" height="200px"></img>}<br></br>
+        Name={this.state && this.state.dish["name"]}<br></br>
+        cost={this.state && this.state.dish["cost"]}<br></br>
+
       </div >
     );
   }
