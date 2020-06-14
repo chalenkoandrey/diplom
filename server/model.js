@@ -22,14 +22,20 @@ const Dish = new Schema({
   availability: { type: String, required: true }
 });
 const DishOrder = new Schema({
-  dishes: { type: [String] },
-  cost: { type: Number, required: true },
-  table: { type: String, required: true },
-  status: { type: String, required: true },
-  client: { type: String, required: true }
+  dishes: { type: [] },
+  cost: { type: Number },
+  table: { type: String },
+  status: { type: String },
+  client: { type: String },
+  camera: { type: String }
+});
+const MessageSchema = new Schema({
+  body: { type: String },
+  author: { type: String }
 });
 const UserModel = mongoose.model('Client', Client);
 const DishModel = mongoose.model('Dish', Dish);
 const EmployeeModel = mongoose.model("Employee", Employee);
 const DishOrderModel = mongoose.model("DishOrder", DishOrder);
-module.exports = { UserModel, DishModel, EmployeeModel, DishOrderModel };
+const MessageModel = mongoose.model("Message", MessageSchema);
+module.exports = { UserModel, DishModel, EmployeeModel, DishOrderModel, MessageModel };

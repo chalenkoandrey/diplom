@@ -21,7 +21,7 @@ function App() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="/home">Home</Nav.Link>
-              <Nav.Link href="/food">Food order</Nav.Link>
+              <Nav.Link href="/foodorder">Food order</Nav.Link>
               <Nav.Link href="/delivery">Delivery</Nav.Link>
               <Nav.Link href="/about">About</Nav.Link>
             </Nav>
@@ -29,7 +29,7 @@ function App() {
         </Navbar>
       </div>
       <Route path="/home" component={Home} />
-      <Route path="/food" component={foodOrder} />
+      <Route path="/foodorder" component={foodOrder} />
       <Route path="/delivery" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/login" component={login} />
