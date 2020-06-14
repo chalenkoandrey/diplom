@@ -29,5 +29,15 @@ module.exports = [
     'image': "3.jpg",
     'type': "meat",
     'availability': "available"
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: 'рассыпчастый рис',
+    'cost': 30,
+    'weight': '200gr',
+    'time': '30min',
+    'image': "3.jpg",
+    'type': "meat",
+    'availability': "available"
   }
 ];

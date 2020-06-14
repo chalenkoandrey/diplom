@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { ListGroup, Button } from "react-bootstrap"
+import { CardDeck, Button, Card } from "react-bootstrap"
 
 class Home extends Component {
   componentDidMount() {
@@ -15,20 +15,20 @@ class Home extends Component {
     return (
       <div className="container">
         Dishes List
-        <ListGroup>
+        <CardDeck>
           {
             this.state && this.state.dishes.map(name => {
               return (
-                <ListGroup.Item action href={"/dishes/" + name["_id"]} >
-                  <img src={"http://localhost:9000/images/" + name["image"]} width="150" height="150"></img>
-                  {name["name"]}
-                  cost:{name["cost"]} uah
-                  <Button>Add to order </Button>
-                </ListGroup.Item>
+                <Card style={{ width: '18rem', height: '15rem', left: '10%', right: '-50%' }}>
+                  <Card.Img src={"http://localhost:9000/images/" + name["image"]} ></Card.Img>
+                  <Card.Title>{name["name"]}</Card.Title>
+                  <Card.Text>cost:{name["cost"]} uah</Card.Text>
+                  <Button action href={"/dishes/" + name["_id"]}>Add to order </Button>
+                </Card>
               )
             })
           }
-        </ListGroup>
+        </CardDeck>
       </div >
     );
   }
