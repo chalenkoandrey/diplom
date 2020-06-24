@@ -2,23 +2,22 @@ const express = require("express");
 let router = express.Router();
 const controller = require("./contoroller");
 const authorization = require("./authorization");
-router.route("/login/")
+router.route("/api/auth/sign_in")
   .post(authorization.login)
 router.route("/registration/")
   .post(authorization.registration)
-router.route("/users/")
+router.route("/api/db/showalldishes")
   .get(controller.showall);
-router.route("/user/:id")
-  .get(controller.showById)
-  .delete(controller.deleteById);
-router.route("/users/:id/requestFriend/")
-  .post(authorization.isUserAuthorized, controller.addFriendsReqById)
-router.route("/users/:id/acceptFriend/")
-  .post(authorization.isUserAuthorized, controller.acceptFriendById)
-router.route("/users/:id/deleteFriend/")
-  .delete(authorization.isUserAuthorized, controller.deleteFriendById)
-router.route("/users/:id/deleteRequest/")
-  .delete(authorization.isUserAuthorized, controller.deleteFriendsReqById)
-router.route("/homepage/")
-  .get(authorization.isUserAuthorized, controller.showByToken)
+router.route("/api/db/detailed/:id")
+  .get(controller.showByIdDetailed)
+router.route("/api/db/small/:id")
+  .get(controller.showByIdSmall)
+router.route("/api/db/order/show/:id")
+  .get(controller.showOrderById)
+router.route("/api/db/order/lsit")
+  .get(controller.dishOrderlist)
+router.route("/api/db/order/neworder/")
+  .post(controller.newOrder)
+router.route("/chat")
+  .get(controller.getMessages);
 module.exports.Router = router

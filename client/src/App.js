@@ -5,9 +5,10 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, NavDropdown, NavLink, Nav, Button, Form, FormControl, Table } from 'react-bootstrap';
 import foodOrder from './components/foodOrder';
-function Home() {
-  return <h2>Home</h2>;
-}
+import login from './components/login';
+import Home from './components/home';
+import Employee from './components/Employee'
+import DeatiledDishes from './components/detaileddish';
 function About() {
   return <h2>Home</h2>;
 }
@@ -21,7 +22,7 @@ function App() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="/home">Home</Nav.Link>
-              <Nav.Link href="/food">Food order</Nav.Link>
+              <Nav.Link href="/foodorder">Food order</Nav.Link>
               <Nav.Link href="/delivery">Delivery</Nav.Link>
               <Nav.Link href="/about">About</Nav.Link>
             </Nav>
@@ -29,9 +30,12 @@ function App() {
         </Navbar>
       </div>
       <Route path="/home" component={Home} />
-      <Route path="/food" component={foodOrder} />
+      <Route path="/foodorder" component={foodOrder} />
       <Route path="/delivery" component={Home} />
       <Route path="/about" component={About} />
+      <Route path="/login" component={login} />
+      <Route path="/dishes" component={DeatiledDishes} />
+      <Route path="/employee" component={Employee} />
     </Router>
   );
 }

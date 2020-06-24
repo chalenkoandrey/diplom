@@ -1,6 +1,8 @@
-const UserModel = require("./model").UserModel;
-function showall(req, res) {//show all users in DataBase
-  UserModel.find()
+const DishModel = require("./model").DishModel;
+const DishOrderModel = require("./model").DishOrderModel;
+const MessageModel = require("./model").MessageModel
+function showall(req, res) {//show all dishes in DataBase
+  DishModel.find()
     .exec()
     .then((result) => {
       res
@@ -13,9 +15,9 @@ function showall(req, res) {//show all users in DataBase
         .send(error);
     })
 }
-function showById(req, res) {//show user by id
-  var userIdForShow = req.params.id;
-  UserModel.findById(userIdForShow)
+function showByIdDetailed(req, res) {//show detailed  dish  by id
+  var dishIdForShow = req.params.id;
+  DishModel.findById(dishIdForShow)
     .exec()
     .then((result) => {
       if (result != null) {
@@ -24,7 +26,7 @@ function showById(req, res) {//show user by id
       else {
         res
           .status(404)
-          .send("No user with this Id");
+          .send("No dish with this Id");
       }
     })
     .catch((error) => {
@@ -33,177 +35,87 @@ function showById(req, res) {//show user by id
         .send(error);
     })
 }
-function deleteById(req, res) {//delete user from DataBase
-  var userIdForDelete = req.params.id;
-  UserModel.findByIdAndDelete(userIdForDelete)
+function showByIdSmall(req, res) {//show small dish by id
+  var dishIdForShow = req.params.id;
+  DishModel.findById(dishIdForShow).select("name cost image availability")
     .exec()
-    .then((user) => {
-      return user.remove();
-    })
-    .then(() => {
-      showall(req, res)
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .send(error);
-    })
-}
-function addFriendsReqById(req, res) {//send reqest to friend
-  const authorizedUserId = req.authData.user;
-  const reqToUser = req.params.id;
-  UserModel.findById(reqToUser)
-    .exec()
-    .then((user) => {
-      if (!isFriend(user, authorizedUserId)) {
-        if (!isFriendRequset(user, authorizedUserId)) {
-          user.friendsrequest.addToSet(authorizedUserId);
-          return user.save()
-        }
-        else {
-          res
-            .status(406)
-            .send("Request already send")
-        }
-      }
-      else {
-        res
-          .status(406)
-          .send("User alredy friend")
-      }
-    })
-    .then((user) => {
-      res
-        .status(202)
-        .send(user);
-    })
-    .catch((error) => {
-      res
-        .status(404)
-        .send(error);
-    });
-}
-function acceptFriendById(req, res) {//add user from friendsrequest to friends
-  const authorizedUserId = req.authData.user;
-  const reqFromUser = req.params.id;
-  UserModel.findById(authorizedUserId)
-    .exec()
-    .then((user) => {
-      if (!isFriend(user, reqFromUser)) {
-        if (isFriendRequset(user, reqFromUser)) {
-          user.friends.addToSet(reqFromUser);
-          user.friendsrequest.pull(reqFromUser);
-          user.save();
-          UserModel.findById(reqFromUser)
-            .exec()
-            .then((user) => {
-              user.friends.addToSet(authorizedUserId);
-              user.friendsrequest.pull(authorizedUserId);
-              return user.save();
-            })
-            .then((user) => {
-              res.send(user);
-            })
-            .catch((error) => {
-              res.send(error);
-            });
-        }
-        else {
-          res
-            .status(424)
-            .send("No request friend");
-        }
-      }
-      else {
-        res
-          .status(422)
-          .send("User alredy friend");
-      }
-    })
-    .catch((error) => {
-      res.send({ "error": error });
-    });
-}
-function deleteFriendById(req, res) {//delete friends by id
-  const authorizedUserId = req.authData.user;
-  const userIdForDelete = req.params.id;
-  UserModel.findById(authorizedUserId)
-    .exec()
-    .then((user) => {
-      if (isFriend(user, userIdForDelete)) {
-        user.friends.pull(userIdForDelete);
-        user.save();
-        UserModel.findById(userIdForDelete)
-          .exec()
-          .then((user) => {
-            user.friends.pull(authorizedUserId);
-            return user.save();
-          })
-          .catch((error) => {
-            res.send(error);
-          });
-      }
-      else {
-        res
-          .status(400)
-          .send("User with this id no friend");
-      }
-    })
-    .then((user) => {
-      res
-        .status(200)
-        .send(user);
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .send(error);
-    });
-}
-function deleteFriendsReqById(req, res) {//delete friends request
-  const authorizedUserId = req.authData.user;
-  const userIdForDelete = req.params.id;
-  UserModel.findById(authorizedUserId)
-    .exec()
-    .then((user) => {
-      if (isFriendRequset(user, userIdForDelete)) {
-        user.friendsrequest.pull(userIdForDelete);
-        return user.save();
+    .then((result) => {
+      if (result != null) {
+        res.json({ result });
       }
       else {
         res
           .status(404)
-          .send("No request with this id")
+          .send("No dish with this Id");
       }
-    })
-    .then((user) => {
-      res
-        .status(200)
-        .send(user);
     })
     .catch((error) => {
       res
-        .status(500)
+        .status(502)
         .send(error);
+    })
+}
+function newOrder(req, res) {
+  if (req.body.orderList && req.body.table && req.body.user) {
+    const list = req.body.orderList.split(",");
+    let order = new DishOrderModel({
+      dishes: list,
+      table: req.body.table,
+      status: "new",
+      user: req.body.user
     });
+    order.save()
+      .then((rezult) => {
+        res
+          .status(200)
+          .json(
+            rezult
+          );
+      })
+      .catch((error) => {
+        res
+          .status(502)
+          .send({ error: "Error add new order" + error });
+      })
+  }
+  else {
+    return res
+      .status(449)
+      .send({ error: "Not full params" });
+  }
 }
-function isFriend(user, fromUser) {
-  return user.friends.includes(fromUser);
+function showOrderById(req, res) {
+  var orderIdForShow = req.params.id;
+  DishOrderModel.findById(orderIdForShow)
+    .exec()
+    .then((result) => {
+      if (result != null) {
+        res.json({ result });
+      }
+      else {
+        res
+          .status(404)
+          .send("No order with this Id");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
 }
-function isFriendRequset(user, fromUser) {
-  return user.friendsrequest.includes(fromUser);
+function dishOrderlist(req, res) {
+  DishOrderModel.find()
+    .exec()
+    .then((result) => {
+      res.json(result);
+    })
 }
-function showByToken(req, res) {
-  console.log(req)
-  const authorizedUserId = req.authData.user;
-  UserModel.findById(authorizedUserId)
-    .then((user) => {
-      res
-        .status(202)
-        .send(user)
+function getMessages(req, res) {
+  MessageModel.find()
+    .then((result) => {
+      console.log(result)
+      res.json(result)
     })
 }
 module.exports = {
-  showall, showById, deleteById, showByToken,
-  addFriendsReqById, acceptFriendById, deleteFriendById, deleteFriendsReqById
+  showall, showByIdDetailed, showByIdSmall, showOrderById, dishOrderlist, newOrder, getMessages
 };
