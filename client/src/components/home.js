@@ -25,6 +25,12 @@ class Home extends Component {
     localStorage.setItem("order", order + "," + id);
     this.setState({ orderList: [...this.state.orderList, id] })
   };
+  removeFromOrder(id) {
+    var order = localStorage.getItem("order")
+    var index = order.replace(id, "")
+    var orderlist1 = this.state.orderList;
+    localStorage.setItem("order", index);
+  };
   isInList(id) {
     return this.state.orderList.find(order => order === id);
   }
@@ -57,6 +63,7 @@ class Home extends Component {
                   <Card.Text>cost:{name["cost"]} uah</Card.Text>
                   <Button action href={"/dishes/" + name["_id"]}> Show more</Button>
                   <Button action disabled={this.isInList(name["_id"])} onClick={() => this.addToOrder(name["_id"])}> Add to order </Button>
+                  <Button action disabled={!this.isInList(name["_id"])} onClick={() => this.removeFromOrder(name["_id"])} variant="danger">Remove from list</Button>
                 </Card>
               )
             })

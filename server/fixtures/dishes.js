@@ -36,7 +36,27 @@ module.exports = [
     'cost': 30,
     'weight': '200gr',
     'time': '30min',
-    'image': "3.jpg",
+    'image': "4.jpg",
+    'type': "meat",
+    'availability': "available"
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: 'гречка',
+    'cost': 55,
+    'weight': '200gr',
+    'time': '30min',
+    'image': "5.jpg",
+    'type': "garnish",
+    'availability': "available"
+  },
+  {
+    _id: mongoose.Types.ObjectId(),
+    name: 'гуляш',
+    'cost': 60,
+    'weight': '200gr',
+    'time': '45min',
+    'image': "6.jpg",
     'type': "meat",
     'availability': "available"
   }
